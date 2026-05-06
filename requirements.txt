@@ -1,0 +1,15 @@
+numpy>=1.24.0
+Pillow>=9.4.0
+librosa>=0.10.0
+soundfile>=0.12.1
+opencv-python>=4.7.0
+torch>=2.0.0
+torchvision>=0.15.0
+moviepy>=1.0.3
+edge-tts>=0.7.0
+requests>=2.31.0
+scipy>=1.10.1
+tqdm>=4.65.0
+pyttsx3>=2.90
+
+

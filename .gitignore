@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+
+# Logs
+logs/
+*.log
+
+# Outputs
+output/
+temp/
+trash/
+*.jsonl
+# Large clip folders
+clips/
+yt shorts/
+# Audio assets
+assets/*.mp3
+# Indexes / embeddings
+index/
+.clip_cache/
+
+# Media
+*.mp4
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# Cache
+.cache/
+
+# Archives
+*.zip
+
+# Generated subtitles
+*.ass
+*.srt
+
+# Secrets
+.env
