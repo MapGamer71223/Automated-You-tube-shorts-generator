@@ -1,115 +1,184 @@
-#YouTube Shorts Generator (YT Bot) — Automation Pipeline
+<div align="center">
 
-Automated pipeline to create AI-assisted YouTube Shorts (9:16) with:
-- TTS voiceovers (Edge TTS or custom)
-- Auto-generated subtitles
-- Motion / blur and image effects
-- Optional segmentation/foreground processing (DeepLabV3)
-- Video assembly via MoviePy
+# AI Shorts Pipeline
 
+```text
+Semantic Retrieval • Automated Rendering • AI Video Generation
+```
 
+End-to-end automated short-form video generation system built around:
+- LLM-generated scripts
+- semantic clip retrieval
+- subtitle synchronization
+- automated pacing
+- FFmpeg rendering pipelines
 
-Features
-- Generate TTS audio asynchronously for text segments
-- Stitch images / clips into a 9:16 short with captions and motion
-- Optional semantic segmentation (DeepLabv3) for foreground/background separation
-- Basic effects: blur, overlays, caption rendering, font support
+</div>
 
+---
 
+# Pipeline Architecture
 
-Repo structure (example)
+```text
+topic
+  ↓
+LLM script generation
+  ↓
+script scoring + refinement
+  ↓
+semantic clip retrieval
+  ↓
+TTS generation
+  ↓
+Whisper alignment
+  ↓
+ASS subtitle generation
+  ↓
+FFmpeg rendering
+  ↓
+final vertical short
+```
 
-yt-bot/
-├── part1.py # TTS generation, prompts, text chunking
-├── part2.py # image generation / procession
-├── part3.py # video assembly (make_video)
-├── fonts/ # fonts used for captions
-├── clips/ # short clips / assets
-├── output/ # generated videos
-├── temp/ # temporary files
-├── requirements.txt
-├── prompts.json
-└── start.bat / run.sh
+---
 
+# Core Systems
 
-Setup
+## Script Engine
 
-1. Create venv & install deps
-bash
-python -m venv venv
-# linux / mac
-source venv/bin/activate
-# windows
-venv\Scripts\activate
+Generates and scores short-form scripts using local LLM workflows with:
+- hook mutation
+- retention-focused scoring
+- metadata generation
+- batch generation pipelines
 
+```text
+prompt
+   ↓
+script generation
+   ↓
+scoring
+   ↓
+hook refinement
+   ↓
+final narration
+```
+
+**Core files**
+- `script_engine.py`
+- `prompts.json`
+
+---
+
+## CLIP + FAISS Retrieval Engine
+
+Semantic moment-level retrieval system using:
+- CLIP embeddings
+- FAISS indexing
+- motion-aware reranking
+- category-aware scoring
+- multi-frame analysis
+
+```text
+script line
+   ↓
+CLIP embedding
+   ↓
+FAISS similarity search
+   ↓
+moment retrieval
+   ↓
+motion reranking
+   ↓
+best matching segment
+```
+
+**Core files**
+- `build_index.py`
+- `clip_engine.py`
+- `clip_sorter.py`
+
+---
+
+## Rendering Pipeline
+
+Custom FFmpeg-based rendering system with:
+- automated clip timing
+- subtitle compositing
+- vertical formatting
+- pacing synchronization
+- ASS subtitle rendering
+
+```text
+audio timing
+      ↓
+clip sequencing
+      ↓
+subtitle timing
+      ↓
+FFmpeg compositing
+      ↓
+final render
+```
+
+**Core files**
+- `part3.py`
+- `part4.py`
+
+---
+
+## TTS + Alignment System
+
+Voice synthesis and alignment pipeline using:
+- Edge TTS
+- Whisper alignment
+- word-level timestamps
+- subtitle synchronization
+
+```text
+generated narration
+        ↓
+speech synthesis
+        ↓
+word timestamps
+        ↓
+subtitle alignment
+```
+
+**Core files**
+- `tts_engine.py`
+
+---
+
+# Features
+
+- Semantic video retrieval
+- Automated short generation
+- CLIP + FAISS indexing
+- Word-level subtitle synchronization
+- FFmpeg rendering orchestration
+- Retention-focused scripting
+- Automated pacing systems
+
+---
+
+# Stack
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-0d1117?style=for-the-badge&logo=python)
+![FAISS](https://img.shields.io/badge/FAISS-0d1117?style=for-the-badge)
+![CLIP](https://img.shields.io/badge/CLIP-0d1117?style=for-the-badge)
+![Whisper](https://img.shields.io/badge/Whisper-0d1117?style=for-the-badge)
+![FFmpeg](https://img.shields.io/badge/FFmpeg-0d1117?style=for-the-badge&logo=ffmpeg)
+![PyTorch](https://img.shields.io/badge/PyTorch-0d1117?style=for-the-badge&logo=pytorch)
+
+</div>
+
+---
+
+# Running
+
+```bash
 pip install -r requirements.txt
-Install FFmpeg (system)
-
-Linux: sudo apt install ffmpeg
-
-Windows: download FFmpeg static build and add to PATH
-
-Fonts & assets
-
-Put any custom fonts in fonts/ and reference them in your caption functions.
-
-Put background clips into clips/.
-
-Running the pipeline
-Minimal usage (example):
-
-bash
-Copy code
-python part1.py          # generate TTS files and is the file you need to connect the ollama or lm studio to use the prompts from the prompt.jason to create script
-python part3.py          # assemble final video using available assets
-Or run your main orchestrator (example):
-
-bash
-Copy code
-python main.py
-Notes / Tips
-Edge TTS requires an internet connection to use Microsoft Edge voices. If you want fully offline TTS, integrate a local TTS model (Coqui or others).
-
-Segmentation (DeepLab) uses a pre-trained model from torchvision; first inference may be slow if CPU-only.
-
-Keep temp/ in .gitignore to avoid committed audio/video blobs.
-
-Use tqdm to visualize generation progress in loops.
-
-System requirements
-Python 3.10+ recommended
-
-FFmpeg installed and available in PATH
-
-For Torch GPU acceleration: CUDA-compatible GPU and matching torch wheel
-
-
-
-Author:
-Punyansh Sharma — AI / automation developer
-
-
-
-4) Small dev notes & suggestions (copy to README or dev.md)
-- Break your pipeline into three clear modules (as you already do):
-  - `part1.py` — prepare text chunks & TTS generation (async), save audio files
-  - `part2.py` — image/background generation & per-frame assets
-  - `part3.py` — assemble audio + frames → final video using MoviePy
-- Keep an index file `main.py` that orchestrates:
-  1. Load prompts.json  
-  2. call `part1.generate_tts` for each chunk (await concurrently)  
-  3. prepare visuals (part2)  
-  4. call `part3.make_video` to assemble and export
-- When using `librosa` for audio features, export stable 16k/22k sample WAV for moviepy compatibility.
-
-
-
-5) .gitignore quick content
-venv/
-pycache/
-.pyc
-output/
-temp/
-.wav
-.mp4
-
+python gui.py
+```
